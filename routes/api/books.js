@@ -4,18 +4,18 @@ const router = express.Router();
 
 const ctrl = require("../../controllers/books");
 
-const { validateBody } = require("../../middlewares");
+const { validateBody, isValidId } = require("../../middlewares");
 
-const schemas = require("../../schemas/books");
+const { schemas } = require("../../models/books/book");
 
 
 router.get("/", ctrl.getAll)
 
-router.get("/:id", ctrl.getById);
+router.get("/:id", isValidId, ctrl.getById);
 
 router.post("/", validateBody(schemas.addSchema), ctrl.add);
 
-router.put("/:id", validateBody(schemas.addSchema), ctrl.updateById);
+router.patch("/:id/favorite", isValidId, validateBody(schemas.updateFavoriteSchema), ctrl.updateFavorite);
 
 router.delete("/:id", ctrl.deleteById);
 
